@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strings"
 	"time"
 )
 
@@ -13,6 +14,11 @@ type Block struct {
 	transactions []string
 }
 
+type Blockchain struct {
+	transactionPool []string
+	chain           []*Block
+}
+
 func newBlock(nonce int, prevHash string) *Block {
 	b := new(Block)
 	b.timestamp = time.Now().Unix()
@@ -21,11 +27,34 @@ func newBlock(nonce int, prevHash string) *Block {
 	return b
 }
 
-func PrintBlock(b *Block) {
+func (b *Block) Print() {
 	fmt.Printf("timestamp: %d\n", b.timestamp)
 	fmt.Printf("nonce: %d\n", b.nonce)
 	fmt.Printf("prevHash: %s\n", b.prevHash)
 	fmt.Printf("transactions: %s\n", b.transactions)
+}
+
+// a method associated with the Blockchain struct
+func (bc *Blockchain) createBlock(nonce int, prevHash string) *Block {
+	b := newBlock(nonce, prevHash)
+	bc.chain = append(bc.chain, b)
+	return b
+}
+
+func (bc *Blockchain) Print() {
+	fmt.Printf("%s", strings.Repeat("*", 50))
+	for i, b := range bc.chain {
+		fmt.Printf("%s Block: %d %s\n", strings.Repeat("=", 25), i, strings.Repeat("=", 25))
+		b.Print()
+		fmt.Printf("\n")
+	}
+	fmt.Printf("%s", strings.Repeat("*", 50))
+}
+
+func newBlockchain() *Blockchain {
+	bc := new(Blockchain)
+	bc.createBlock(0, "first hash")
+	return bc
 }
 
 func init() {
@@ -33,6 +62,7 @@ func init() {
 }
 
 func main() {
-	b := newBlock(0, "0")
-	PrintBlock(b)
+	blockChain := newBlockchain()
+	blockChain.createBlock(13, "hash1")
+	blockChain.Print()
 }
