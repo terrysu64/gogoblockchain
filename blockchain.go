@@ -37,6 +37,33 @@ func (bc *Blockchain) AddTransaction(sender string, recipient string, amount flo
 	bc.transactionPool = append(bc.transactionPool, t)
 }
 
+func (bc *Blockchain) CopyTransactionPool() []*Transaction {
+	transactions := make([]*Transaction, len(bc.transactionPool))
+	for i, t := range bc.transactionPool {
+		transactions[i] = newTransaction(t.senderAddress, t.recipientAddress, t.amount)
+	}
+	return transactions
+}
+
+// valid nonce has 3 0s at the beginning
+// hash is made from (potential nonce + prevHash + transactions)
+// placeholder timestamp as 0
+func (bc *Blockchain) ValidNonce(nonce int, prevHash [32]byte, transactions []*Transaction, difficulty int) bool {
+	guessBlock := Block{nonce, 0, prevHash, transactions}
+	guessHash := fmt.Sprintf("%x", guessBlock.Hash())
+	return guessHash[:difficulty] == strings.Repeat("0", difficulty)
+}
+
+func (bc *Blockchain) ProofOfWork(difficulty int) int {
+	nonce := 0
+	prevHash := bc.LastBlock().Hash()
+	transactions := bc.CopyTransactionPool()
+	for !bc.ValidNonce(nonce, prevHash, transactions, difficulty) {
+		nonce++
+	}
+	return nonce
+}
+
 func newBlockchain() *Blockchain {
 	bc := new(Blockchain)
 	bc.createBlock(0, (&Block{}).Hash())
