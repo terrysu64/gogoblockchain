@@ -2,16 +2,18 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"strings"
 )
 
 type Blockchain struct {
-	transactionPool []*Transaction
-	chain           []*Block
+	transactionPool   []*Transaction
+	chain             []*Block
+	blockchainAddress string
 }
 
 // -----------BLOCKCHAIN METHODS----------------
-func (bc *Blockchain) createBlock(nonce int, prevHash [32]byte) *Block {
+func (bc *Blockchain) CreateBlock(nonce int, prevHash [32]byte) *Block {
 	b := newBlock(nonce, prevHash, bc.transactionPool)
 	bc.chain = append(bc.chain, b)
 	bc.transactionPool = []*Transaction{}
@@ -64,8 +66,18 @@ func (bc *Blockchain) ProofOfWork(difficulty int) int {
 	return nonce
 }
 
-func newBlockchain() *Blockchain {
+func (bc *Blockchain) Mining() bool {
+	bc.AddTransaction(MINING_SENDER, bc.blockchainAddress, MINING_REWARD)
+	nonce := bc.ProofOfWork(MINING_DIFFICULTY)
+	bc.CreateBlock(nonce, bc.LastBlock().Hash())
+	log.Println("Mining successful!")
+	return true
+
+}
+
+func newBlockchain(blockchainAddress string) *Blockchain {
 	bc := new(Blockchain)
-	bc.createBlock(0, (&Block{}).Hash())
+	bc.blockchainAddress = blockchainAddress
+	bc.CreateBlock(0, (&Block{}).Hash())
 	return bc
 }
