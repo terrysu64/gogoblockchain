@@ -16,13 +16,18 @@ func init() {
 }
 
 func main() {
-	blockChain := newBlockchain("tempblockchainaddress")
-	blockChain.AddTransaction("Terry", "John", 100.0)
-	blockChain.AddTransaction("Terrysu", "Johnny", 100.0)
-	blockChain.Mining()
-	blockChain.AddTransaction("Terry", "John", 10.0)
-	blockChain.Mining()
-	blockChain.Print()
-	fmt.Println("\n", blockChain.TotalBalance("Terry"))
-	fmt.Println("\n", blockChain.TotalBalance("tempblockchainaddress")) //the miner
+
+	w := NewWallet()
+	fmt.Println(w.PrivateKeyString())
+	fmt.Println(w.PublicKeyString())
+
+	// blockChain := newBlockchain("tempblockchainaddress")
+	// blockChain.AddTransaction("Terry", "John", 100.0)
+	// blockChain.AddTransaction("Terrysu", "Johnny", 100.0)
+	// blockChain.Mining()
+	// blockChain.AddTransaction("Terry", "John", 10.0)
+	// blockChain.Mining()
+	// blockChain.Print()
+	// fmt.Println("\n", blockChain.TotalBalance("Terry"))
+	// fmt.Println("\n", blockChain.TotalBalance("tempblockchainaddress")) //the miner
 }
