@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 )
 
@@ -22,4 +23,6 @@ func main() {
 	blockChain.AddTransaction("Terry", "John", 10.0)
 	blockChain.Mining()
 	blockChain.Print()
+	fmt.Println("\n", blockChain.TotalBalance("Terry"))
+	fmt.Println("\n", blockChain.TotalBalance("tempblockchainaddress")) //the miner
 }

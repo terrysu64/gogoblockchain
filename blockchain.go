@@ -72,7 +72,21 @@ func (bc *Blockchain) Mining() bool {
 	bc.CreateBlock(nonce, bc.LastBlock().Hash())
 	log.Println("Mining successful!")
 	return true
+}
 
+func (bc *Blockchain) TotalBalance(address string) float32 {
+	var balance float32 = 0.0
+	for _, b := range bc.chain {
+		for _, t := range b.transactions {
+			if t.recipientAddress == address {
+				balance += t.amount
+			}
+			if t.senderAddress == address {
+				balance -= t.amount
+			}
+		}
+	}
+	return balance
 }
 
 func newBlockchain(blockchainAddress string) *Blockchain {
