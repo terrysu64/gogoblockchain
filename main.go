@@ -20,6 +20,7 @@ func main() {
 	w := NewWallet()
 	fmt.Println(w.PrivateKeyString())
 	fmt.Println(w.PublicKeyString())
+	fmt.Println(w.BlockchainAddress())
 
 	// blockChain := newBlockchain("tempblockchainaddress")
 	// blockChain.AddTransaction("Terry", "John", 100.0)
