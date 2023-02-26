@@ -22,6 +22,9 @@ func main() {
 	fmt.Println(w.PublicKeyString())
 	fmt.Println(w.BlockchainAddress())
 
+	wt := w.NewWalletTransaction(w.PrivateKey(), w.PublicKey(), w.BlockchainAddress(), "John", 100.0)
+	fmt.Printf("signature %s\n", wt.GenerateSignature())
+
 	// blockChain := newBlockchain("tempblockchainaddress")
 	// blockChain.AddTransaction("Terry", "John", 100.0)
 	// blockChain.AddTransaction("Terrysu", "Johnny", 100.0)

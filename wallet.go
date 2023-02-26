@@ -15,6 +15,7 @@ type Wallet struct {
 	publicKey  *ecdsa.PublicKey
 	blockchainAddress string
 }
+	 
 
 func NewWallet() *Wallet {
 	//1. create ECDSA private and public keys (32 and 64 bytes respectively)
