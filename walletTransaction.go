@@ -5,8 +5,6 @@ import (
 	"crypto/sha256"
 	"encoding/json"
 	"crypto/rand"
-	"math/big"
-	"fmt"
 )
 
 type WalletTransaction struct {
@@ -15,11 +13,6 @@ type WalletTransaction struct {
 	senderBlockchainAddress string
 	recipientBlockchainAddress string
 	value float32
-}
-
-type Signature struct {
-	R *big.Int
-	S *big.Int
 }
 
 func (w *Wallet) NewWalletTransaction(senderPrivateKey *ecdsa.PrivateKey, senderPublicKey *ecdsa.PublicKey, 
@@ -52,6 +45,3 @@ func (wt *WalletTransaction) MarshalJSON() ([]byte, error) {
 	})
 }
 
-func (s *Signature) String() string {
-	return fmt.Sprintf("%x%x", s.R, s.S)
-}
